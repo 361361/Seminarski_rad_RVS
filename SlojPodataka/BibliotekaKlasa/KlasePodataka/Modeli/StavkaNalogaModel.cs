@@ -1,4 +1,4 @@
-﻿namespace BibliotekaKlasa.KlasePodataka.Modeli
+﻿namespace SlojPodataka.BibliotekaKlasa.KlasePodataka.Modeli
 {
     public class StavkaNalogaModel
     {
