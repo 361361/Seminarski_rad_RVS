@@ -1,4 +1,4 @@
-﻿using BibliotekaKlasa.KlasePodataka.Modeli;
+﻿using SlojPodataka.BibliotekaKlasa.KlasePodataka.Modeli;
 using System;
 using System.Collections.Generic;
 using System.Data;
