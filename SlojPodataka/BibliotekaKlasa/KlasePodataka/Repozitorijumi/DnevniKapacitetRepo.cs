@@ -1,8 +1,9 @@
-﻿using BibliotekaKlasa.TehnoloskeKlase;
+﻿using BibliotekaKlasa.KlasePodataka.Modeli;
+using BibliotekaKlasa.TehnoloskeKlase;
 using Microsoft.Data.SqlClient;
-using SlojPodataka.BibliotekaKlasa.KlasePodataka.Modeli;
+using BibliotekaKlasa.KlasePodataka.Modeli;
 
-namespace SlojPodataka.BibliotekaKlasa.KlasePodataka.Repozitorijumi
+namespace BibliotekaKlasa.KlasePodataka.Repozitorijumi
 {
     // Standardna SqlClient realizacija (kao pomoćni repozitorijum, koristi ga
     // sloj poslovne logike / REST servis za proveru i ažuriranje kapaciteta).
