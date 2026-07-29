@@ -1,6 +1,5 @@
 ﻿using BibliotekaKlasa.KlasePodataka.Modeli;
 using Microsoft.Data.SqlClient;
-using BibliotekaKlasa.KlasePodataka.Modeli;
 using System.Data;
 
 namespace BibliotekaKlasa.KlasePodatakaSP.Repozitorijumi

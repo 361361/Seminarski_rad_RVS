@@ -1,6 +1,5 @@
 ﻿using BibliotekaKlasa.KlasePodataka.Modeli;
 using BibliotekaKlasa.TehnoloskeKlase;
-using BibliotekaKlasa.KlasePodataka.Modeli;
 using System.Data;
 
 namespace BibliotekaKlasa.KlasePodataka.Repozitorijumi
