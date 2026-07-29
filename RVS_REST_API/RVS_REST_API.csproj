@@ -10,4 +10,13 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Ogranicenja\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PoslovnaLogika\PoslovnaLogika.csproj" />
+    <ProjectReference Include="..\SlojPodataka\SlojPodataka.csproj" />
+  </ItemGroup>
+
 </Project>
