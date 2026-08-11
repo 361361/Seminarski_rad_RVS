@@ -1,5 +1,6 @@
 <Solution>
-  <Project Path="PoslovnaLogika/PoslovnaLogika.csproj" Id="63c783db-1acb-4a04-9ccb-5ec943654055" />
-  <Project Path="RVS_REST_API/RVS_REST_API.csproj" Id="91ce8ae9-f8ca-4c96-a6f2-3c1d0a3db901" />
+  <Project Path="PoslovnaLogika/PoslovnaLogika.csproj" />
+  <Project Path="Prezentacioni sloj/Prezentacioni sloj.csproj" />
+  <Project Path="RVS_REST_API/RVS_REST_API.csproj" />
   <Project Path="SlojPodataka/SlojPodataka.csproj" />
 </Solution>

@@ -7,4 +7,8 @@
     <RootNamespace>Prezentacioni_sloj</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PoslovnaLogika\PoslovnaLogika.csproj" />
+  </ItemGroup>
+
 </Project>
