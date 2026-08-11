@@ -1,0 +1,70 @@
+@{
+    string? korisnickoIme = Context.Session.GetString("ImePrezime");
+    string? uloga = Context.Session.GetString("Uloga");
+}
+<!DOCTYPE html>
+<html lang="sr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Planiranje proizvodnje PVC stolarije</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <header class="no-print">
+        <nav class="navbar navbar-expand-md navbar-dark app-navbar">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-controller="ProizvodniNalog" asp-action="Index">
+                    PVC stolarija &mdash; Proizvodnja
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#glavniMeni">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="glavniMeni">
+                    @if (korisnickoIme != null)
+                    {
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="ProizvodniNalog" asp-action="Index">Proizvodni nalozi</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="ProizvodniNalog" asp-action="Kreiraj">Novi nalog</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="Kupac" asp-action="Index">Kupci</a>
+                            </li>
+                        </ul>
+                        <span class="navbar-text me-3">
+                            Prijavljen: <strong>@korisnickoIme</strong> <span class="badge text-bg-light">@uloga</span>
+                        </span>
+                        <a class="btn btn-outline-light btn-sm" asp-controller="Nalog" asp-action="Odjava">Odjava</a>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container app-container">
+        @if (TempData["Napomena"] != null)
+        {
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                @TempData["Napomena"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        <main role="main">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="no-print text-center text-muted py-4">
+        <small>Seminarski rad &mdash; Razvoj višeslojnog softvera &mdash; Planiranje proizvodnje PVC stolarije</small>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

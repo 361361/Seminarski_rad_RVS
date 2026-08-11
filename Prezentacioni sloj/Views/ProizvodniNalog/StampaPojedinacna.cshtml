@@ -1,0 +1,94 @@
+@model NalogPrikazViewModel
+@{
+    ViewData["Title"] = $"Štampa naloga {Model.BrojNaloga}";
+    Layout = "_LayoutPrazan";
+}
+
+<div class="container my-4 dokument-stampa" style="max-width:900px">
+    <div class="d-flex justify-content-between mb-3 no-print">
+        <button class="btn btn-primary" onclick="window.print()">🖶 Štampaj</button>
+        <a asp-action="Detalji" asp-route-id="@Model.IdNaloga" class="btn btn-outline-secondary">Nazad</a>
+    </div>
+
+    <h1 class="h4 text-center mb-4">PROIZVODNI NALOG</h1>
+
+    <table class="mb-3">
+        <tbody>
+            <tr>
+                <th style="width:40%">Broj naloga:</th>
+                <td>@Model.BrojNaloga</td>
+            </tr>
+            <tr>
+                <th>Kupac:</th>
+                <td>@Model.Kupac?.Naziv @(string.IsNullOrEmpty(Model.Kupac?.Adresa) ? "" : $", {Model.Kupac.Adresa}")</td>
+            </tr>
+            <tr>
+                <th>Datum prijema porudžbine:</th>
+                <td>@Model.DatumPrijema.ToString("dd.MM.yyyy.")</td>
+            </tr>
+            <tr>
+                <th>Željeni datum izrade:</th>
+                <td>@Model.ZeljeniDatumIzrade.ToString("dd.MM.yyyy.")</td>
+            </tr>
+            <tr>
+                <th>Predloženi (odobreni) datum izrade:</th>
+                <td>
+                    @Model.PredlozeniDatumIzrade.ToString("dd.MM.yyyy.")
+                    @if (Model.PredlozeniDatumIzrade.Date != Model.ZeljeniDatumIzrade.Date)
+                    {
+                        <text> &mdash; napomena: kapacitet za traženi datum je bio popunjen</text>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <th>Status naloga:</th>
+                <td>@Model.Status</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="mb-2">
+        <thead>
+            <tr>
+                <th>R.br.</th>
+                <th>Tip elementa</th>
+                <th>Širina (mm)</th>
+                <th>Visina (mm)</th>
+                <th>Kol.</th>
+                <th>Boja profila</th>
+                <th>Tip stakla</th>
+                <th>Okov</th>
+                <th>Površina (m²)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{ int redniBroj = 1; }
+            @foreach (var stavka in Model.Stavke)
+            {
+                <tr>
+                    <td>@(redniBroj++)</td>
+                    <td>@stavka.TipElementa</td>
+                    <td>@stavka.SirinaMM</td>
+                    <td>@stavka.VisinaMM</td>
+                    <td>@stavka.Kolicina</td>
+                    <td>@stavka.BojaProfila</td>
+                    <td>@stavka.TipStakla</td>
+                    <td>@stavka.TipOkova</td>
+                    <td>@stavka.PovrsinaM2.ToString("0.00")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <p class="fw-semibold">Ukupna površina naloga: @Model.UkupnaPovrsinaM2.ToString("0.00") m²</p>
+    <p>Napomena / posebni zahtevi: ______________________________________________</p>
+
+    <div class="row mt-5">
+        <div class="col-6 text-center">
+            <div style="border-top:1px solid #000; margin-top:3rem; padding-top:0.3rem;">Referent</div>
+        </div>
+        <div class="col-6 text-center">
+            <div style="border-top:1px solid #000; margin-top:3rem; padding-top:0.3rem;">Rukovodilac proizvodnje</div>
+        </div>
+    </div>
+</div>

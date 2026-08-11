@@ -1,0 +1,116 @@
+@model NalogPrikazViewModel
+@{
+    ViewData["Title"] = $"Nalog {Model.BrojNaloga}";
+    string[] moguciStatusi = { "Na cekanju", "Odobren", "U izradi", "Zavrsen", "Otkazan" };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Nalog @Model.BrojNaloga</h1>
+    <div>
+        <a asp-action="StampaPojedinacna" asp-route-id="@Model.IdNaloga" class="btn btn-outline-dark">🖶 Štampaj</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Nazad na spisak</a>
+    </div>
+</div>
+
+<div class="card card-nalog bg-white p-4 mb-4">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="text-muted small">Kupac</div>
+            <div class="fw-semibold">@Model.Kupac?.Naziv</div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-muted small">Datum prijema</div>
+            <div>@Model.DatumPrijema.ToString("dd.MM.yyyy.")</div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-muted small">Status</div>
+            <div><span class="badge text-bg-secondary">@Model.Status</span></div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-muted small">Željeni datum izrade</div>
+            <div>@Model.ZeljeniDatumIzrade.ToString("dd.MM.yyyy.")</div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-muted small">Predloženi (odobreni) datum izrade</div>
+            <div>
+                @Model.PredlozeniDatumIzrade.ToString("dd.MM.yyyy.")
+                @if (Model.PredlozeniDatumIzrade.Date != Model.ZeljeniDatumIzrade.Date)
+                {
+                    <span class="badge text-bg-warning">termin pomeren zbog kapaciteta</span>
+                }
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-muted small">Ukupna površina</div>
+            <div class="fw-semibold">@Model.UkupnaPovrsinaM2.ToString("0.00") m²</div>
+        </div>
+    </div>
+</div>
+
+<h2 class="h5">Stavke naloga</h2>
+<div class="table-responsive mb-4">
+    <table class="table table-bordered bg-white">
+        <thead class="table-light">
+            <tr>
+                <th>Tip elementa</th>
+                <th>Širina (mm)</th>
+                <th>Visina (mm)</th>
+                <th>Kol.</th>
+                <th>Boja profila</th>
+                <th>Tip stakla</th>
+                <th>Tip okova</th>
+                <th>Površina (m²)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var stavka in Model.Stavke)
+            {
+                <tr>
+                    <td>@stavka.TipElementa</td>
+                    <td>@stavka.SirinaMM</td>
+                    <td>@stavka.VisinaMM</td>
+                    <td>@stavka.Kolicina</td>
+                    <td>@stavka.BojaProfila</td>
+                    <td>@stavka.TipStakla</td>
+                    <td>@stavka.TipOkova</td>
+                    <td>@stavka.PovrsinaM2.ToString("0.00")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card p-3 bg-white">
+            <h2 class="h6">Promena statusa</h2>
+            <form asp-action="IzmeniStatus" asp-route-id="@Model.IdNaloga" method="post" class="d-flex gap-2">
+                @Html.AntiForgeryToken()
+                <select name="noviStatus" class="form-select">
+                    @foreach (var status in moguciStatusi)
+                    {
+                        if (status == Model.Status)
+                        {
+                            <option value="@status" selected>@status</option>
+                        }
+                        else
+                        {
+                            <option value="@status">@status</option>
+                        }
+                    }
+                </select>
+                <button type="submit" class="btn btn-primary text-nowrap">Sačuvaj status</button>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card p-3 bg-white">
+            <h2 class="h6">Brisanje naloga</h2>
+            <form asp-action="Obrisi" asp-route-id="@Model.IdNaloga" method="post"
+                  onsubmit="return confirm('Da li si siguran da želiš da obrišeš nalog @Model.BrojNaloga? Ova akcija je trajna.');">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="btn btn-outline-danger">Obriši nalog</button>
+            </form>
+        </div>
+    </div>
+</div>

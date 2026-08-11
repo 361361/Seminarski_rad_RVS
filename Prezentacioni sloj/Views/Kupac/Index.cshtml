@@ -1,0 +1,61 @@
+@model List<KupacViewModel>
+@{
+    ViewData["Title"] = "Kupci";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Kupci</h1>
+    <a class="btn btn-primary" asp-action="Dodaj">+ Novi kupac</a>
+</div>
+
+<form method="get" asp-action="Index" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input type="text" name="filter" value="@ViewBag.Filter" class="form-control" placeholder="Pretraga po nazivu ili emailu..." style="min-width:300px" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Pretraži</button>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Index" class="btn btn-outline-secondary">Poništi</a>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Nema kupaca koji odgovaraju pretrazi.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered bg-white">
+            <thead class="table-light">
+                <tr>
+                    <th>Naziv</th>
+                    <th>Adresa</th>
+                    <th>Telefon</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var kupac in Model)
+                {
+                    <tr>
+                        <td>@kupac.Naziv</td>
+                        <td>@kupac.Adresa</td>
+                        <td>@kupac.Telefon</td>
+                        <td>@kupac.Email</td>
+                        <td class="text-nowrap">
+                            <a asp-action="Izmeni" asp-route-id="@kupac.IdKupac" class="btn btn-sm btn-outline-primary">Izmeni</a>
+                            <form asp-action="Obrisi" asp-route-id="@kupac.IdKupac" method="post" class="d-inline"
+                                  onsubmit="return confirm('Obrisati kupca @kupac.Naziv?');">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Obriši</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

@@ -1,0 +1,72 @@
+@model List<NalogPrikazViewModel>
+@{
+    ViewData["Title"] = "Proizvodni nalozi";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1 class="h3 mb-0">Proizvodni nalozi</h1>
+    <a class="btn btn-primary" asp-action="Kreiraj">+ Novi nalog</a>
+</div>
+
+<form method="get" asp-action="Index" class="row g-2 mb-3">
+    <div class="col-auto">
+        <input type="text" name="filter" value="@ViewBag.Filter" class="form-control" placeholder="Pretraga po broju naloga, kupcu ili statusu..." style="min-width:320px" />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-outline-secondary">Pretraži</button>
+    </div>
+    <div class="col-auto">
+        <a asp-action="Index" class="btn btn-outline-secondary">Poništi</a>
+    </div>
+    <div class="col-auto ms-auto">
+        <a asp-action="Stampa" asp-route-filter="@ViewBag.Filter" class="btn btn-outline-dark">🖶 Štampaj spisak</a>
+    </div>
+</form>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">Nema proizvodnih naloga koji odgovaraju pretrazi.</div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered bg-white tabela-naloga">
+            <thead class="table-light">
+                <tr>
+                    <th>Broj naloga</th>
+                    <th>Kupac</th>
+                    <th>Datum prijema</th>
+                    <th>Željeni datum</th>
+                    <th>Predloženi datum</th>
+                    <th>Površina (m²)</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var nalog in Model)
+                {
+                    <tr>
+                        <td>@nalog.BrojNaloga</td>
+                        <td>@nalog.Kupac?.Naziv</td>
+                        <td>@nalog.DatumPrijema.ToString("dd.MM.yyyy.")</td>
+                        <td>@nalog.ZeljeniDatumIzrade.ToString("dd.MM.yyyy.")</td>
+                        <td>
+                            @nalog.PredlozeniDatumIzrade.ToString("dd.MM.yyyy.")
+                            @if (nalog.PredlozeniDatumIzrade.Date != nalog.ZeljeniDatumIzrade.Date)
+                            {
+                                <span class="badge text-bg-warning" title="Datum je pomeren zbog kapaciteta">pomeren</span>
+                            }
+                        </td>
+                        <td>@nalog.UkupnaPovrsinaM2.ToString("0.00")</td>
+                        <td><span class="badge text-bg-secondary">@nalog.Status</span></td>
+                        <td class="text-nowrap">
+                            <a asp-action="Detalji" asp-route-id="@nalog.IdNaloga" class="btn btn-sm btn-outline-primary">Detalji</a>
+                            <a asp-action="StampaPojedinacna" asp-route-id="@nalog.IdNaloga" class="btn btn-sm btn-outline-dark">🖶</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

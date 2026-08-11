@@ -1,0 +1,126 @@
+@model NoviNalogViewModel
+@{
+    ViewData["Title"] = "Novi proizvodni nalog";
+}
+
+<h1 class="h3 mb-3">Novi proizvodni nalog</h1>
+
+<form asp-controller="ProizvodniNalog" asp-action="Kreiraj" method="post" class="card card-nalog p-4 bg-white">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="IdKorisnik" />
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <h2 class="h5">Zaglavlje naloga</h2>
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <label asp-for="IdKupac" class="form-label"></label>
+            <select asp-for="IdKupac" class="form-select">
+                <option value="">-- izaberite kupca --</option>
+                @if (Model.DostupniKupci != null)
+                {
+                    foreach (var kupac in Model.DostupniKupci)
+                    {
+                        <option value="@kupac.IdKupac">@kupac.Naziv</option>
+                    }
+                }
+            </select>
+            <span asp-validation-for="IdKupac" class="text-danger"></span>
+            <div class="form-text">
+                Kupac nije na spisku? <a asp-controller="Kupac" asp-action="Dodaj" target="_blank">Dodaj novog kupca</a> pa osveži ovu stranicu.
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label asp-for="ZeljeniDatumIzrade" class="form-label"></label>
+            <input asp-for="ZeljeniDatumIzrade" class="form-control" type="date" />
+            <span asp-validation-for="ZeljeniDatumIzrade" class="text-danger"></span>
+            <div class="form-text">Ako kapacitet za ovaj datum nije dovoljan, sistem će predložiti naredni slobodan termin.</div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="h5 mb-0">Stavke naloga (elementi stolarije)</h2>
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick="dodajStavku()">+ Dodaj stavku</button>
+    </div>
+
+    <div class="table-responsive mb-2">
+        <table class="table table-bordered align-middle" id="tabelaStavki">
+            <thead class="table-light">
+                <tr>
+                    <th style="width:2.5rem">#</th>
+                    <th>Tip elementa</th>
+                    <th style="width:8rem">Širina (mm)</th>
+                    <th style="width:8rem">Visina (mm)</th>
+                    <th style="width:6rem">Kol.</th>
+                    <th>Boja profila</th>
+                    <th>Tip stakla</th>
+                    <th>Tip okova</th>
+                    <th style="width:6rem">Površina</th>
+                    <th style="width:2.5rem"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Stavke.Count; i++)
+                {
+                    <tr class="stavka-red">
+                        <td class="redni-broj">@(i + 1)</td>
+                        <td>
+                            <select asp-for="Stavke[i].TipElementa" class="form-select form-select-sm">
+                                <option>Prozor</option>
+                                <option>Balkonska vrata</option>
+                                <option>Ulazna vrata</option>
+                                <option>Roletna</option>
+                            </select>
+                        </td>
+                        <td><input asp-for="Stavke[i].SirinaMM" class="form-control form-control-sm polje-sirina" /></td>
+                        <td><input asp-for="Stavke[i].VisinaMM" class="form-control form-control-sm polje-visina" /></td>
+                        <td><input asp-for="Stavke[i].Kolicina" class="form-control form-control-sm polje-kolicina" value="1" /></td>
+                        <td><input asp-for="Stavke[i].BojaProfila" class="form-control form-control-sm" placeholder="npr. Bela" /></td>
+                        <td><input asp-for="Stavke[i].TipStakla" class="form-control form-control-sm" placeholder="npr. Trokomorno" /></td>
+                        <td><input asp-for="Stavke[i].TipOkova" class="form-control form-control-sm" placeholder="npr. Standardni" /></td>
+                        <td class="prikaz-povrsine text-end">0.00 m²</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="ukloniStavku(this)">✕</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <span asp-validation-for="Stavke" class="text-danger"></span>
+
+    <div class="text-end mb-4">
+        <strong>Ukupna površina naloga: <span id="ukupnaPovrsinaPrikaz">0.00 m²</span></strong>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sačuvaj nalog</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Otkaži</a>
+</form>
+
+<!-- Template za dinamički dodate stavke (JS ga klonira - vidi wwwroot/js/site.js) -->
+<template id="sablonStavke">
+    <tr class="stavka-red">
+        <td class="redni-broj"></td>
+        <td>
+            <select name="Stavke[999].TipElementa" class="form-select form-select-sm">
+                <option>Prozor</option>
+                <option>Balkonska vrata</option>
+                <option>Ulazna vrata</option>
+                <option>Roletna</option>
+            </select>
+        </td>
+        <td><input name="Stavke[999].SirinaMM" class="form-control form-control-sm polje-sirina" value="1000" /></td>
+        <td><input name="Stavke[999].VisinaMM" class="form-control form-control-sm polje-visina" value="1200" /></td>
+        <td><input name="Stavke[999].Kolicina" class="form-control form-control-sm polje-kolicina" value="1" /></td>
+        <td><input name="Stavke[999].BojaProfila" class="form-control form-control-sm" placeholder="npr. Bela" /></td>
+        <td><input name="Stavke[999].TipStakla" class="form-control form-control-sm" placeholder="npr. Trokomorno" /></td>
+        <td><input name="Stavke[999].TipOkova" class="form-control form-control-sm" placeholder="npr. Standardni" /></td>
+        <td class="prikaz-povrsine text-end">0.00 m²</td>
+        <td class="text-center">
+            <button type="button" class="btn btn-sm btn-outline-danger" onclick="ukloniStavku(this)">✕</button>
+        </td>
+    </tr>
+</template>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

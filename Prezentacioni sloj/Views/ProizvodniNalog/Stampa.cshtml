@@ -1,0 +1,47 @@
+@model List<NalogPrikazViewModel>
+@{
+    ViewData["Title"] = "Štampa spiska naloga";
+    Layout = "_LayoutPrazan";
+}
+
+<div class="container my-4 dokument-stampa">
+    <div class="d-flex justify-content-between mb-3 no-print">
+        <button class="btn btn-primary" onclick="window.print()">🖶 Štampaj</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Nazad</a>
+    </div>
+
+    <h1 class="h4 text-center mb-1">Spisak proizvodnih naloga</h1>
+    <p class="text-center text-muted mb-4">
+        Datum štampe: @DateTime.Now.ToString("dd.MM.yyyy. HH:mm")
+        @if (!string.IsNullOrWhiteSpace(ViewBag.Filter as string))
+        {
+            <text> &mdash; filter: "@ViewBag.Filter"</text>
+        }
+    </p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Broj naloga</th>
+                <th>Kupac</th>
+                <th>Datum prijema</th>
+                <th>Datum izrade</th>
+                <th>Površina (m²)</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var nalog in Model)
+            {
+                <tr>
+                    <td>@nalog.BrojNaloga</td>
+                    <td>@nalog.Kupac?.Naziv</td>
+                    <td>@nalog.DatumPrijema.ToString("dd.MM.yyyy.")</td>
+                    <td>@nalog.PredlozeniDatumIzrade.ToString("dd.MM.yyyy.")</td>
+                    <td>@nalog.UkupnaPovrsinaM2.ToString("0.00")</td>
+                    <td>@nalog.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

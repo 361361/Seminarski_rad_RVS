@@ -1,0 +1,41 @@
+@model KupacViewModel
+@{
+    ViewData["Title"] = "Izmena kupca";
+}
+
+<h1 class="h3 mb-3">Izmena kupca</h1>
+
+<form asp-action="Izmeni" method="post" class="card card-nalog p-4 bg-white" style="max-width:600px">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="IdKupac" />
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+    <div class="mb-3">
+        <label asp-for="Naziv" class="form-label"></label>
+        <input asp-for="Naziv" class="form-control" autofocus />
+        <span asp-validation-for="Naziv" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Adresa" class="form-label"></label>
+        <input asp-for="Adresa" class="form-control" />
+        <span asp-validation-for="Adresa" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Telefon" class="form-label"></label>
+        <input asp-for="Telefon" class="form-control" placeholder="npr. 063/111-222" />
+        <span asp-validation-for="Telefon" class="text-danger"></span>
+        <div id="Telefon-js-greska" class="form-text text-danger"></div>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Sačuvaj izmene</button>
+    <a asp-action="Index" class="btn btn-outline-secondary">Otkaži</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
