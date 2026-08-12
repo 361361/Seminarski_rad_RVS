@@ -64,5 +64,16 @@ namespace RVS_Aplikacija.Controllers
         }
 
         public IActionResult Greska() => View();
+
+        // PRIVREMENO - samo za generisanje test lozinke, BRISI!
+        [HttpGet]
+        public IActionResult ProveriLogin(string korisnickoIme, string lozinka)
+        {
+            var korisnik = _korisnikRepo.DajPoKorisnickomImenu(korisnickoIme);
+            if (korisnik == null) return Content("Korisnik NIJE pronađen u bazi.");
+
+            bool ispravno = FunkcijeLozinke.ProveriLozinku(lozinka, korisnik.LozinkaSalt!, korisnik.LozinkaHash!);
+            return Content($"Korisnik pronađen: {korisnik.KorisnickoIme}\nSalt iz baze: {korisnik.LozinkaSalt}\nHash iz baze: {korisnik.LozinkaHash}\nLozinka se poklapa: {ispravno}");
+        }
     }
 }

@@ -22,6 +22,7 @@ builder.Services.AddScoped<NaloziApiServis>();
 builder.Services.AddScoped<KupacApiServis>();
 
 // SESIJA - čuva podatke o prijavljenom korisniku (login)
+// ============================================================
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(opcije =>
 {
