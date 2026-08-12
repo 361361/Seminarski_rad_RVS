@@ -1,0 +1,97 @@
+﻿:root {
+    --boja-primarna: #2c5aa0;
+    --boja-primarna-tamna: #1e3f73;
+    --boja-akcent: #e8a33d;
+    --boja-pozadina: #f5f7fa;
+}
+
+body {
+    background-color: var(--boja-pozadina);
+}
+
+.app-navbar {
+    background-color: var(--boja-primarna-tamna);
+}
+
+.app-container {
+    margin-top: 1.75rem;
+    margin-bottom: 2.5rem;
+}
+
+.card-nalog {
+    border: 1px solid #dde3ea;
+    border-radius: 0.5rem;
+}
+
+.stavka-red {
+    background-color: #ffffff;
+}
+
+.badge-status-Na_cekanju {
+    background-color: #adb5bd;
+}
+
+.badge-status-Odobren {
+    background-color: var(--boja-primarna);
+}
+
+.badge-status-U_izradi {
+    background-color: var(--boja-akcent);
+}
+
+.badge-status-Zavrsen {
+    background-color: #2f9e44;
+}
+
+.badge-status-Otkazan {
+    background-color: #c92a2a;
+}
+
+table.tabela-naloga th {
+    white-space: nowrap;
+}
+
+/* ===================== ŠTAMPA (printer-friendly) ===================== */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    .app-container {
+        margin: 0;
+        max-width: 100%;
+    }
+
+    body {
+        background-color: #ffffff;
+    }
+
+    .dokument-stampa {
+        border: 1px solid #000;
+        padding: 1.5rem;
+    }
+
+    a[href]::after {
+        content: "";
+    }
+}
+
+.dokument-stampa table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.dokument-stampa th, .dokument-stampa td {
+    border: 1px solid #999;
+    padding: 0.4rem 0.6rem;
+}
+
+/* ===================== LOGIN ===================== */
+.login-wrapper {
+    min-height: 100vh;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 400px;
+}
